@@ -35,8 +35,8 @@ This project is designed to be a very lightweight ORM for interacting with a SQL
 That's it!
 
 Example:
-
-    public class User {
+```java
+    public class User {
         private String name;
         private String password;
 
@@ -56,7 +56,8 @@ Example:
             this.password = password;
         }
 
-    }
+    }
+```
 
 Would map to a database table that looks like this, with the name of **user**:
 <table>
@@ -79,8 +80,8 @@ For slightly more "advanced" usage, you can specify two different types of Annot
 * @AutoIncrement - This should be specified on any database columns that are being auto-incremented by the database, so that we know to not specify anything for that field when inserting and let the database handle it.
 
 Example:
-
-    public class User {
+```java
+    public class User {
         @AutoIncrement
         @PrimaryKey
         private long id;
@@ -112,6 +113,7 @@ Example:
         }
     
     }
+```
 
 Which would map to a table named **user** that looks like:
 
@@ -136,35 +138,39 @@ Once the connection is initialized you will use the static methods off of SqlSta
 Code Examples:
 
 Retrieving a User from the database:
-
-    User u = SqlStatement.select(User.class).where("name").eq("Nick").getList().get(0);
+```java
+    User u = SqlStatement.select(User.class).where("name").eq("Nick").getList().get(0);
+```
 
 Retreiving a list of Users whose name starts with the letter 'A':
-
-    List<User> users = SqlStatement.select(User.class).where("name").like("A%").getList();
+```java
+    List<User> users = SqlStatement.select(User.class).where("name").like("A%").getList();
+```
 
 Changing the User with the name = Nick's password:
-
+```java
     User nick = SqlStatement.select(User.class).where("name").eq("nick");
     nick.setPassword("ABC123");
     SqlStatement.update(nick).execute(); // Note this is if you define a @PrimaryKey annotation 
                                  //(see 'Slightly More Advanced "Mapping"' section for more info).
-
+```
 Inserting a new User into the database:
-
+```java
     User newUser = new User();
     newUser.setName("Bob");
     newUser.setPassword("123456");
     SqlStatement.insert(newUser).execute();
+```
 
 Retreiving a list of all users in descending order:
 
+```java
     List<User> users = SqlStatement.select(User.class).orderBy("name").desc().getList();
-
+```
 Getting just the count of all the users in the database:
-
+```java
     int numOfUsers = SqlStatement.select(User.class).getCount();
-
+```
 The [JavaDocs](http://njkremer.github.com/SqliteORM/javadoc/) have a pretty good outline of what is possible with interactions. Note that after you start your SqlStatement a SqlExecutor is returned
 for function chaining. So when looking at the JavaDocs you may want to look at the [SqlExecutor](http://njkremer.github.com/SqliteORM/javadoc/com/njkremer/Sqlite/SqlExecutor.html) class.
 
